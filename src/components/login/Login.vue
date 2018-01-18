@@ -4,11 +4,11 @@
         <!-- model用来关联表单数据, rules用来指定校验规则 -->
         <el-form label-position="left" label-width="60px" ref="ruleForm2" :model="formLabelAlign" :rules="rules">
             <!-- 如果要表单校验与重置功能, 必须加上prop属性 -->
-            <el-form-item label="账号" prop="uname">
-                <el-input v-model="formLabelAlign.uname"></el-input>
+            <el-form-item label="账号" prop="user_name">
+                <el-input v-model="formLabelAlign.user_name"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="upwd">
-                <el-input v-model="formLabelAlign.upwd"></el-input>
+            <el-form-item label="密码" prop="password">
+                <el-input v-model="formLabelAlign.password"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm2')">立即登陆</el-button>
@@ -40,12 +40,12 @@
             return {
                 // 表单提交的数据
                 formLabelAlign: {
-                    uname: '',
-                    upwd: ''
+                    user_name: '',
+                    password: ''
                 },
                 // 表单校验规则
                 rules: {
-                    uname: [{
+                    user_name: [{
                             required: true,
                             message: '请填写账号',
                             trigger: 'blur'
@@ -61,12 +61,12 @@
                             trigger: 'blur'
                         }
                     ],
-                    upwd: [{
+                    password: [{
                             validator: upwdFn,
                             trigger: 'blur'
                         },
                         {
-                            pattern: /^\w{6,18}$/,
+                            pattern: /^\w{2,18}$/,
                             message: '密码在6~18位',
                             trigger: 'blur'
                         },

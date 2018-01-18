@@ -1,12 +1,16 @@
 <template>
     <div>
-        公共头部
+        {{name}}
     </div>
 </template>
 
 <script>
     export default {
-        
+        data () {
+            return {
+                name:'公共头部'
+            }
+        }
     }
 </script>
 

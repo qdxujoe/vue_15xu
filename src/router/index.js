@@ -1,7 +1,7 @@
 // 导入相关第三方包
 import Vue from 'vue'
 import Router from 'vue-router'
-
+// import Admin from '../component/store/store.vue';
 // 导入路由守卫
 import beforeEach from './beforeEach.js';
 
