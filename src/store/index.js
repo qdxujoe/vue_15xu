@@ -14,6 +14,10 @@ export default {
     // 这里的方法会自动接收到state状态
     shoppingSum(state) {
       return Object.values(state.shopping).reduce((sum, v) => sum + v, 0);
+    },
+    //获取所有商品id
+    shoppingIds(state){
+      return Object.keys(state.shopping).join(',')
     }
   },
 
@@ -27,6 +31,12 @@ export default {
       console.log(id, count);
       //全局的状态修改之后，记得在本地持久化存储一下，这样刷新页面或者关闭重开页面数据不会丢失
       localStorage.setItem("shopping", JSON.stringify(state.shopping));
+    },
+
+    //删除某商品的数量 => 从状态和storage里都删除
+    delShopping(state,id){
+      Vue.delete(state.shopping,id);
+      localStorage.setItem('shopping',JSON.stringify(state.shopping));
     }
   }
 };

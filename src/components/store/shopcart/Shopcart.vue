@@ -1,26 +1,26 @@
 <template>
    <div>
         <div class="section">
-        <div class="location">
-            <span>当前位置：</span>
-            <router-link to="/">首页</router-link>&gt;
-            <router-link to=" ">购物车</router-link>
+            <div class="location">
+                <span>当前位置：</span>
+                <router-link to="/">首页</router-link>&gt;
+                <router-link to=" ">购物车</router-link>
+            </div>
         </div>
         <div class="section">
-<div class="wrapper">
-<div class="bg-wrap">
-<!--购物车头部-->
-<div class="cart-head clearfix">
-<h2><i class="iconfont icon-cart"></i>我的购物车</h2>
-<div class="cart-setp">
-<ul>
-<li class="first active">
-<div class="progress">
-<span>1</span>
-放进购物车
-</div>
-</li>
-<li>
+            <div class="wrapper">
+                <div class="bg-wrap">
+                        <!--购物车头部-->
+                    <div class="cart-head clearfix">
+                        <h2><i class="iconfont icon-cart"></i>我的购物车</h2>
+                        <div class="cart-setp">
+                                <ul>
+                                    <li class="first active">
+                                        <div class="progress">
+                                            <span>1</span>放进购物车
+                                        </div>
+                                    </li>
+                                    <li>
 <div class="progress">
 <span>2</span>
 填写订单信息
@@ -40,9 +40,10 @@
 <div class="cart-box">
 <input id="jsondata" name="jsondata" type="hidden">
 <table width="100%" align="center" class="cart-table" border="0" cellspacing="0" cellpadding="8">
-<tbody><tr>
+<tbody>
+<tr>
 <th width="48" align="center">
-<a>全选</a>
+<el-switch :value="allSeletedState" @change="allChange" active-color="#13ce66">全选</el-switch>
 </th>
 <th align="left" colspan="2">商品信息</th>
 <th width="84" align="left">单价</th>
@@ -81,13 +82,73 @@
 </div>
 </div>
 </div>
-    </div>
-   </div>
+</div>
+   
     
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      ids: null,
+      goodsList: []
+    };
+  },
+  computed: {
+    total() {
+      return this.goodsList.reduce(
+        (total, v) => total + (v.selected ? v.buycount : 0),
+        0
+      );
+    },
+    //总价=》遍历商品列表，如果商品的selected字段为true，那么累加它的buycount购买数量* sell_price单价
+    sum() {
+      return this.goodsList.reduce(
+        (total, v) => total + (v.selected ? v.buycount * v.sell_price : 0),
+        0
+      );
+    },
+    // 全选按钮
+    allSeletedState() {
+      return this.goodsList.every(v => v.selected);
+    }
+  },
+  methods: {
+    //获取购物车商品列表数据
+    getGoodsList() {
+      this.$http.get(this.$api.shopcartGoods + this.ids).then(res => {
+        res.data.message.forEach(goods => {
+          goods.selected = true;
+          goods.buycount = this.$store.stste.shopping[goods.id];
+        });
+        this.goodsList = res.data.message;
+      });
+    },
+    //删除商品- 1 从goodsList里面删除--2 调用$store.commit从全局状态里删除
+    del(id) {
+      // 找出不删除的商品重新赋值
+      this.goodsList = this.goodsList.filter(v => v.id != id);
+      this.$store.commit("delShopping", id);
+    },
+    // 修改商品数量:1 从goodsList里面修改 2 调用$store.commit从全局状态里修改
+    change(id, count) {
+      this.goodsList.forEach(v => {
+        if (v.id == id) {
+          v.buycount = count;
+        }
+      });
+      // es6简写法
+      this.$store.commit("modifyShopping", { id, count });
+    }
+  },
+
+  // 初始化完毕后 => 获取购物车ids, 然后调用接口
+  created() {
+    this.ids = this.$store.getters.shoppingId;
+    this.getGoodsList();
+  }
+};
 </script>
 
 <style scoped>
