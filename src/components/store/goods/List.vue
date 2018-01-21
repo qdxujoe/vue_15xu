@@ -4,13 +4,11 @@
             <div class="section">
                 <div class="location">
                     <span>当前位置：</span>
-                    <router-link to="/goods/list">首页</router-link>
+                    <router-link to="/goods/list">首页</router-link>                  
                 </div>
-            </div>
-    
+            </div>   
             <!-- 头部 -->
-            <list-top></list-top>
-    
+            <list-top></list-top>  
             <!-- 主体 -->
             <list-main></list-main>
         </div>

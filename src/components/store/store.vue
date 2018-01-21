@@ -7,16 +7,16 @@
 </template>
 
 <script>
-  import appHeader from './common/Header.vue';
-  import appFooter from './common/Footer.vue';
+import appHeader from "./common/Header.vue";
+import appFooter from "./common/Footer.vue";
 
-  export default {
-        // 注册子组件, es6语法简写
-        components: {
-            appHeader,
-            appFooter
-        }
-    }
+export default {
+  // 注册子组件, es6语法简写
+  components: {
+    appHeader,
+    appFooter
+  }
+};
 </script>
 <style scoped>
 
